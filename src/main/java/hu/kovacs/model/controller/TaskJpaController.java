@@ -166,7 +166,51 @@ public class TaskJpaController implements Serializable {
         }
     }
 
-    public void editTaskById(int idTask, Task task){
+    public void editTaskById(int idTask, Task task) throws NonexistentEntityException{
+        
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            Task persistentTask = em.find(Task.class, idTask);
+            Collection<User> userCollectionOld = persistentTask.getUserCollection();
+            Collection<User> userCollectionNew = task.getUserCollection();
+            Collection<User> attachedUserCollectionNew = new ArrayList<User>();
+            for (User userCollectionNewUserToAttach : userCollectionNew) {
+                userCollectionNewUserToAttach = em.getReference(userCollectionNewUserToAttach.getClass(), userCollectionNewUserToAttach.getIduser());
+                attachedUserCollectionNew.add(userCollectionNewUserToAttach);
+            }
+            userCollectionNew = attachedUserCollectionNew;
+            task.setUserCollection(userCollectionNew);
+            task = em.merge(task);
+            for (User userCollectionOldUser : userCollectionOld) {
+                if (!userCollectionNew.contains(userCollectionOldUser)) {
+                    userCollectionOldUser.getTaskCollection().remove(task);
+                    userCollectionOldUser = em.merge(userCollectionOldUser);
+                }
+            }
+            for (User userCollectionNewUser : userCollectionNew) {
+                if (!userCollectionOld.contains(userCollectionNewUser)) {
+                    userCollectionNewUser.getTaskCollection().add(task);
+                    userCollectionNewUser = em.merge(userCollectionNewUser);
+                }
+            }
+            em.getTransaction().commit();
+        } catch (Exception ex) {
+            String msg = ex.getLocalizedMessage();
+            if (msg == null || msg.length() == 0) {
+                Integer id = task.getIdtask();
+                if (findTask(id) == null) {
+                    throw new NonexistentEntityException("The task with id " + id + " no longer exists.");
+                }
+            }
+            throw ex;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    
         
         
     }
