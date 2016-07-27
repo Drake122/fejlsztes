@@ -11,6 +11,7 @@ import hu.kovacs.model.TaskDTOConverter;
 import hu.kovacs.model.User;
 import hu.kovacs.model.UserDTO;
 import hu.kovacs.model.controller.TaskJpaController;
+import hu.kovacs.model.controller.exceptions.NonexistentEntityException;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,7 +52,11 @@ public class TaskService implements TaskServiceImpl{
 
     @Override
     public void editTask(int idTask, Task task) {
-        newTaskJpaControll.editTaskById(idTask, task);
+        try {
+            newTaskJpaControll.editTaskById(idTask, task);
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(TaskService.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override

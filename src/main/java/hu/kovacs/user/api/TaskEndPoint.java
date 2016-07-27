@@ -76,7 +76,7 @@ public class TaskEndPoint {
     @RequestMapping(value = "/updateTask/{id}", method = RequestMethod.PUT)
     public String updateTask(@PathVariable(value = "id") Integer id, @RequestBody() Task task) {
         taskService.editTask(id, task);
-        return "Sikerült módosítani a " + task.getLabel() + " cimkéjű taszkot!";
+        return "Sikerült felvinni a " + task.getLabel() + " cimkéjű taszkot!";
     }
 
 }
