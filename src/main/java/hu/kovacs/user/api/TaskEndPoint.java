@@ -73,10 +73,20 @@ public class TaskEndPoint {
         return "Sikerült felvinni a taskot: " + (task != null ? task.getIdtask() : " sikertelen ") + ". -val";
     }
 
-    @RequestMapping(value = "/updateTask/{id}", method = RequestMethod.PUT)
-    public String updateTask(@PathVariable(value = "id") Integer id, @RequestBody() Task task) {
+    @RequestMapping(value = "/updateTaskById/{id}", method = RequestMethod.PUT)
+    public String updateTaskById(@PathVariable(value = "id") Integer id, @RequestBody() Task task) {
         taskService.editTask(id, task);
         return "Sikerült felvinni a " + task.getLabel() + " cimkéjű taszkot!";
     }
-
+  @RequestMapping(value = "/updateTask", method = RequestMethod.PUT)
+    public String updateTask(@RequestBody() Task task) {
+        taskService.editTask(task);
+        return "Sikerült módisítani a " + task.getLabel() + " cimkéjű taszkot!";
+    }
+    
+    @RequestMapping(value = "/allTask", method = RequestMethod.GET)
+        public List<TaskDTO> allTask(){
+            return taskService.allTask();
+        }
+    
 }
