@@ -15,6 +15,7 @@ import hu.kovacs.model.UserDTOConverter;
 import hu.kovacs.model.services.role.RoleService;
 import java.util.ArrayList;
 import java.util.Collection;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,11 +25,13 @@ import org.springframework.web.bind.annotation.RestController;
  * @author kovacs.sandor
  */
 @RestController
+@CrossOrigin(origins = "http://localhost:63342")
 @RequestMapping(value = "role")
 public class RoleEndPoint {
     
     RoleService roleService = new RoleService();
     
+    @CrossOrigin(origins = "http://localhost:63342")
     @RequestMapping(value = "/allRole", method = RequestMethod.GET)
     public Collection<RoleDTO> getAllRole() {
          Collection<RoleDTO> tempRole = new ArrayList<>();

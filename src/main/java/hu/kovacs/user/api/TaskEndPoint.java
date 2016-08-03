@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,16 +33,19 @@ import org.springframework.web.bind.annotation.RestController;
  * @author kovacs.sandor
  */
 @RestController
+@CrossOrigin(origins = "http://localhost:63342")
 @RequestMapping(value = "task")
 public class TaskEndPoint {
 
     TaskService taskService = new TaskService();
 
+    @CrossOrigin(origins = "http://localhost:63342")
     @RequestMapping(value = "/findTaskById/{id}", method = RequestMethod.GET)
     public TaskDTO findTaskById(@PathVariable(value = "id") int idTask) {
         return TaskDTOConverter.entityConvertFromTask(taskService.findTaskById(idTask));
     }
 
+    @CrossOrigin(origins = "http://localhost:63342")
     @RequestMapping(value = "/taskNew/{id}", method = RequestMethod.PUT)
     public String newTask(@RequestBody Task task, @PathVariable(value = "id") Integer id) {
         taskService.saveNewTask(task);
@@ -50,6 +54,7 @@ public class TaskEndPoint {
     }
     //  public Task(String label, String description, Integer status, Date startTime, Date finishTime, int priority, Integer responsible, Collection<User> userCollection) 
 
+    @CrossOrigin(origins = "http://localhost:63342")
     @RequestMapping(value = "/newTask", method = RequestMethod.PUT)
     public String newTask(@RequestParam(value = "label") String label, @RequestParam(value = "description") String description, @RequestParam(value = "status") Integer status,
             @RequestParam(value = "startTime") String startTime, @RequestParam(value = "finishTime") String finishTime, @RequestParam(value = "priority") int priority,
@@ -73,17 +78,21 @@ public class TaskEndPoint {
         return "Sikerült felvinni a taskot: " + (task != null ? task.getIdtask() : " sikertelen ") + ". -val";
     }
 
+    @CrossOrigin(origins = "http://localhost:63342")
     @RequestMapping(value = "/updateTaskById/{id}", method = RequestMethod.PUT)
     public String updateTaskById(@PathVariable(value = "id") Integer id, @RequestBody() Task task) {
         taskService.editTask(id, task);
         return "Sikerült felvinni a " + task.getLabel() + " cimkéjű taszkot!";
     }
-  @RequestMapping(value = "/updateTask", method = RequestMethod.PUT)
+  
+    @CrossOrigin(origins = "http://localhost:63342")
+    @RequestMapping(value = "/updateTask", method = RequestMethod.PUT)
     public String updateTask(@RequestBody() Task task) {
         taskService.editTask(task);
         return "Sikerült módisítani a " + task.getLabel() + " cimkéjű taszkot!";
     }
     
+    @CrossOrigin(origins = "http://localhost:63342")
     @RequestMapping(value = "/allTask", method = RequestMethod.GET)
         public List<TaskDTO> allTask(){
             return taskService.allTask();
