@@ -7,11 +7,14 @@
 package hu.kovacs.model.services.task;
 
 import hu.kovacs.model.Task;
+import hu.kovacs.model.TaskDTO;
 import hu.kovacs.model.TaskDTOConverter;
 import hu.kovacs.model.User;
 import hu.kovacs.model.UserDTO;
 import hu.kovacs.model.controller.TaskJpaController;
 import hu.kovacs.model.controller.exceptions.NonexistentEntityException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -76,4 +79,11 @@ public class TaskService implements TaskServiceImpl{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    public List<TaskDTO> allTask(){
+       List<TaskDTO> tempAllTask = new ArrayList<>();
+        for(Task task : newTaskJpaControll.findTaskEntities()){
+           tempAllTask.add(TaskDTOConverter.entityConvertFromTask(task));
+        }
+        return tempAllTask;
+    }
 }
