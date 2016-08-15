@@ -78,14 +78,14 @@ public class TaskEndPoint {
         return "Sikerült felvinni a taskot: " + (task != null ? task.getIdtask() : " sikertelen ") + ". -val";
     }
 
-    @CrossOrigin(origins = "http://localhost:63342")
-    @RequestMapping(value = "/updateTaskById/{id}", method = RequestMethod.PUT)
+   // @CrossOrigin(origins = "http://localhost:63342")
+    @RequestMapping(value = "/updateTaskById/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public String updateTaskById(@PathVariable(value = "id") Integer id, @RequestBody() Task task) {
         taskService.editTask(id, task);
-        return "Sikerült felvinni a " + task.getLabel() + " cimkéjű taszkot!";
+        return "{\"valasz\":\"ok\"}";
     }
   
-    @CrossOrigin(origins = "http://localhost:63342")
+   // @CrossOrigin(origins = "http://localhost:63342")
     @RequestMapping(value = "/updateTask", method = RequestMethod.PUT)
     public String updateTask(@RequestBody() Task task) {
         taskService.editTask(task);

@@ -7,11 +7,15 @@
 package hu.kovacs.model.services.user;
 
 import hu.kovacs.model.Role;
+import hu.kovacs.model.Task;
+import hu.kovacs.model.TaskDTO;
 import hu.kovacs.model.User;
+import hu.kovacs.model.controller.TaskJpaController;
 import hu.kovacs.model.controller.UserJpaController;
 import hu.kovacs.model.controller.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
@@ -25,7 +29,7 @@ public class UserService implements UserServiceImpl{
     
      EntityManagerFactory emf = Persistence.createEntityManagerFactory("todoPU");
         UserJpaController newUsercontr = new UserJpaController(emf);
-       
+       TaskJpaController newTaskJpaControll = new TaskJpaController(emf);
 
     @Override
     public void saveNewUser(User user) {
@@ -37,7 +41,7 @@ public class UserService implements UserServiceImpl{
     public User findByUsername(String username) {
          try {
              return newUsercontr.findByUsername(username);
-         } catch (NonexistentEntityException ex) {
+         } catch (Exception ex) {
              Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
              return null;
          }        
@@ -92,6 +96,6 @@ public class UserService implements UserServiceImpl{
     @Override
     public User findById(int idUser) {
        return newUsercontr.findUser(idUser);
-    }
+    }   
     
 }

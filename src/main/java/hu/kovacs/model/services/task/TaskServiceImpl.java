@@ -29,7 +29,7 @@ public interface TaskServiceImpl {
     
     Task findTaskById(int id);
     
-    Task findTaskByLabel(String label);
+   // Task findTaskByLabel(String label);
     
     
     

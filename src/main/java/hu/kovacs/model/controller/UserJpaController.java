@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package hu.kovacs.model.controller;
 
 import java.io.Serializable;
@@ -205,40 +204,43 @@ public class UserJpaController implements Serializable {
             em.close();
         }
     }
-    
-     public User findByUsername(String name) throws NonexistentEntityException{
-         EntityManager em = getEntityManager();
+
+    public User findByUsername(String name) throws NonexistentEntityException {
+        EntityManager em = getEntityManager();
+
+        try {
+            Query query = em.createNamedQuery("User.findByName");
+            query.setParameter("name", name);
+
+            return (User) query.getResultList().get(0);
+        } catch (EntityNotFoundException enfe) {
+            throw new NonexistentEntityException("The user with name " + name + " no longer exists.", enfe);
+        } catch(Exception ex){
+            throw new RuntimeException("Cannot find user with the given name: " + name);
+        }
         
-         try {             
-             Query query = em.createNamedQuery("User.findByName");
-             query.setParameter("name",name);             
-             
-             return (User)query.getResultList().get(0);
-          } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The user with name " + name + " no longer exists.", enfe);
-            }finally {
+        finally {
             if (em != null) {
                 em.close();
-            }        
-     }
-     }
-     
-      public Collection<User> findAllUser() throws NonexistentEntityException{
-         EntityManager em = getEntityManager();
-        
-         try {             
-             Query query = em.createNamedQuery("User.findAll");           
-             return query.getResultList();
-          } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The users no longer exists.", enfe);
-            }finally {
+            }
+        }
+    }
+
+    public Collection<User> findAllUser() throws NonexistentEntityException {
+        EntityManager em = getEntityManager();
+
+        try {
+            Query query = em.createNamedQuery("User.findAll");
+            return query.getResultList();
+        } catch (EntityNotFoundException enfe) {
+            throw new NonexistentEntityException("The users no longer exists.", enfe);
+        } finally {
             if (em != null) {
                 em.close();
-            }        
-     }
-     }
-     
-     
+            }
+        }
+    }
+
     public int getUserCount() {
         EntityManager em = getEntityManager();
         try {
@@ -251,5 +253,5 @@ public class UserJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }

@@ -74,10 +74,10 @@ public class TaskService implements TaskServiceImpl{
         return newTaskJpaControll.findTask(id);
     }
 
-    @Override
+ /*   @Override
     public Task findTaskByLabel(String label) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    }*/
     
     public List<TaskDTO> allTask(){
        List<TaskDTO> tempAllTask = new ArrayList<>();
@@ -86,4 +86,6 @@ public class TaskService implements TaskServiceImpl{
         }
         return tempAllTask;
     }
+    
+    
 }

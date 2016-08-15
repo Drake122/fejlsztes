@@ -5,7 +5,6 @@
  */
 package hu.kovacs.user.api;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import hu.kovacs.model.Role;
 import hu.kovacs.model.Task;
 import hu.kovacs.model.TaskDTO;
@@ -18,10 +17,11 @@ import hu.kovacs.model.services.user.UserService;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
-import javax.swing.text.html.HTMLDocument;
+import java.util.List;
+import net.minidev.json.JSONObject;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -70,12 +70,16 @@ public class UserEndpoint {
 
     @CrossOrigin(origins = "http://localhost:63342")
     @RequestMapping(value = "/login", method = RequestMethod.POST)//body-ban kell küldeni
-    public String loggedUser(@RequestParam(value = "name") String name, @RequestParam(value = "password") String password) {
-        User loginUser = userservice.findByUsername(name);
-        if (loginUser.getPassword().equals(password)) {
-            return "Logged " + name + "!";
+    public String loggedUser(@RequestBody LoginData loginData) {
+        User loginUser = userservice.findByUsername(loginData.getUsername());
+        if (loginUser !=null && loginUser.getPassword().equals(loginData.getPassword())) {
+            int idUser= loginUser.getIduser();            
+            JSONObject json = new JSONObject();
+            json.put("valasz", idUser);
+            String jsonString = json.toString();
+            return jsonString;
         } else {
-            return "Hibás felhasználónév vagy jelszó!";
+            return "{\"valasz\":\"false\"}";
         }
     }
 
@@ -110,6 +114,47 @@ public class UserEndpoint {
       }
         return tempUser;
    
+    }
+    
+     @CrossOrigin(origins = "http://localhost:63342")
+    @RequestMapping(value = "/findAllTaskByUserId/{id}", method = RequestMethod.GET)
+    public List<TaskDTO> findAllTaskByUserId(@PathVariable(value = "id") int idUser) {   
+        List<TaskDTO> tempAllTask = new ArrayList<>();
+       User findUser = userservice.findById(idUser);
+       Collection<Task>findTasks = findUser.getTaskCollection();
+       for(Task task: findTasks){
+           TaskDTO temptask =  TaskDTOConverter.entityConvertFromTask(task);
+           tempAllTask.add(temptask);
+       }        
+        return tempAllTask;
+                    
+    }
+
+    private static class LoginData {
+
+        public LoginData() {
+        }
+        
+        private String username;
+        private String password;
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+        
+        
     }
     
     
