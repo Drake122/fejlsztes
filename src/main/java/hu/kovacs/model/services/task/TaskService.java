@@ -11,9 +11,11 @@ import hu.kovacs.model.TaskDTO;
 import hu.kovacs.model.TaskDTOConverter;
 import hu.kovacs.model.User;
 import hu.kovacs.model.UserDTO;
+import hu.kovacs.model.UserDTOConverter;
 import hu.kovacs.model.controller.TaskJpaController;
 import hu.kovacs.model.controller.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -46,12 +48,12 @@ public class TaskService implements TaskServiceImpl{
         }
     }
 
-    @Override
-    public void setUsers(Set<Integer> userIds) {
+  /*  @Override
+    public void setUsers(Set<String> userNames) {
         TaskDTOConverter newTaskDTO = new TaskDTOConverter();
        
       
-    }
+    }*/
 
     @Override
     public void editTask(int idTask, Task task) {
@@ -64,7 +66,13 @@ public class TaskService implements TaskServiceImpl{
 
     @Override
     public Set<UserDTO> getUsersByTaskId(int taskId) {
-       return null; 
+        Set<UserDTO> tempUsers=new HashSet<UserDTO>();
+        Task tempTask= newTaskJpaControll.findTask(taskId);
+        for(User tempUser:tempTask.getUserCollection()){
+            tempUsers.add( UserDTOConverter.convertFromEntity(tempUser));
+        }
+      
+       return tempUsers; 
     }
 
     @Override

@@ -41,7 +41,7 @@ public class TaskDTO {
     
     private Integer responsible;
     
-    private Set<Integer> userCollection;
+    private Set<String> userCollection;
 
     public Integer getIdtask() {
         return idtask;
@@ -107,11 +107,11 @@ public class TaskDTO {
         this.responsible = responsible;
     }
 
-    public Set<Integer> getUserCollection() {
+    public Set<String> getUserCollection() {
         return userCollection;
     }
 
-    public void setUserCollection(Set<Integer> userCollection) {
+    public void setUserCollection(Set<String> userCollection) {
         this.userCollection = userCollection;
     }
 

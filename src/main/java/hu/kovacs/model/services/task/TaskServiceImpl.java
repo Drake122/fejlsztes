@@ -21,7 +21,7 @@ public interface TaskServiceImpl {
     
     void editTask(Task task);
     
-    void setUsers(Set<Integer>userIds);
+   // void setUsers(Set<String>userNames);
     
     void editTask(int idTask, Task task);
     

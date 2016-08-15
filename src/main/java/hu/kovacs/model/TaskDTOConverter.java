@@ -33,12 +33,13 @@ public class TaskDTOConverter {
         
         
         
-        Set<Integer> userIds = new HashSet<>();
+        Set<String> userNames = new HashSet<>();
          
         for(User user: task.getUserCollection()){
-            userIds.add(user.getIduser());
+            userNames.add(user.getName());
+            
         }
-        taskDTO.setUserCollection(userIds);
+        taskDTO.setUserCollection(userNames);
         
         return taskDTO;
     }

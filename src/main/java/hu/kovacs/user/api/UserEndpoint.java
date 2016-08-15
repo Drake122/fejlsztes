@@ -106,8 +106,8 @@ public class UserEndpoint {
     public Collection<UserDTO> getAllUserByTaskId(@PathVariable(value = "id") int idTask) {        
       Collection<UserDTO> tempUser = new ArrayList<>();
       
-      Collection<Integer> userIds= new HashSet<>();
-      userIds=TaskDTOConverter.entityConvertFromTask(taskService.findTaskById(idTask)).getUserCollection();
+      Collection<String> userNames= new HashSet<>();
+      userNames=TaskDTOConverter.entityConvertFromTask(taskService.findTaskById(idTask)).getUserCollection();
       for(User user: taskService.findTaskById(idTask).getUserCollection()){
          
           tempUser.add( UserDTOConverter.convertFromEntity(user));
