@@ -66,7 +66,7 @@ public class User implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "enabled")
-    private boolean enabled;
+    private boolean enabled = true;
     @Transient
     private int roleId;
     @ManyToMany(mappedBy = "userCollection")
@@ -88,8 +88,15 @@ public class User implements Serializable {
         this.enabled = enabled;
        
     }
-
-    
+ 
+    public User(Integer iduser, String name, String email, String password) {
+        this.iduser = iduser;
+        this.name = name;
+        this.email = email;
+        this.password = password;       
+    }
+  
+  
     public User(String name, String password, String email, boolean enabled, int roleId) {
         this.name = name;
         this.password = password;

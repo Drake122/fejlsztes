@@ -54,7 +54,7 @@ public class TaskEndPoint {
     }
     //  public Task(String label, String description, Integer status, Date startTime, Date finishTime, int priority, Integer responsible, Collection<User> userCollection) 
 
-    @CrossOrigin(origins = "http://localhost:63342")
+ /*   @CrossOrigin(origins = "http://localhost:63342")
     @RequestMapping(value = "/newTask", method = RequestMethod.PUT)
     public String newTask(@RequestParam(value = "label") String label, @RequestParam(value = "description") String description, @RequestParam(value = "status") Integer status,
             @RequestParam(value = "startTime") String startTime, @RequestParam(value = "finishTime") String finishTime, @RequestParam(value = "priority") int priority,
@@ -77,7 +77,15 @@ public class TaskEndPoint {
 
         return "Sikerült felvinni a taskot: " + (task != null ? task.getIdtask() : " sikertelen ") + ". -val";
     }
-
+*/
+    
+     @CrossOrigin(origins = "http://localhost:63342")
+    @RequestMapping(value = "/newTask", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public String newTask( @RequestBody() Task task){
+        taskService.saveNewTask(task);
+        return "{\"valasz\":\"okNewTask\"}";
+    }
+    
    // @CrossOrigin(origins = "http://localhost:63342")
     @RequestMapping(value = "/updateTaskById/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public String updateTaskById(@PathVariable(value = "id") Integer id, @RequestBody() Task task) {

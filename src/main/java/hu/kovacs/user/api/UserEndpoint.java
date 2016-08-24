@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import net.minidev.json.JSONObject;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,15 +49,28 @@ public class UserEndpoint {
         return UserDTOConverter.convertFromEntity(userservice.findById(idUser));       
     }
    
+      @CrossOrigin(origins = "http://localhost:63342")
+    @RequestMapping(value = "/findUserByUserName/{name}", method = RequestMethod.GET)
+    public UserDTO findUserByUserName(@PathVariable(value = "name") String name) {       
+        return UserDTOConverter.convertFromEntity(userservice.findByUsername(name));       
+    }
 
-    @CrossOrigin(origins = "http://localhost:63342")
-    @RequestMapping(value = "/newUser", method = RequestMethod.POST)
+ /*  @CrossOrigin(origins = "http://localhost:63342")
+    @RequestMapping(value = "/newUser", method = RequestMethod.PUT)
     public String idNewUser(@RequestParam(value = "name") String name, @RequestParam(value = "password") String password
             , @RequestParam(value = "email") String email, @RequestParam(value = "enabled") Boolean enabled, @RequestParam(value = "idRole") int idRole) {
         User testUser1 = new User(name, password, email, enabled, idRole);//TODO -idrole
         userservice.saveNewUser(testUser1);
 
         return "ok! " + testUser1.getIduser();
+    }*/
+    
+      @CrossOrigin(origins = "http://localhost:63342")
+    @RequestMapping(value = "/newUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public String newUser( @RequestBody() User user){
+        userservice.saveNewUser(user);
+      // return "Registration successful";
+       return "{\"success\":\"true\"}";
     }
     
     @CrossOrigin(origins = "http://localhost:63342")
@@ -79,7 +93,7 @@ public class UserEndpoint {
             String jsonString = json.toString();
             return jsonString;
         } else {
-            return "{\"valasz\":\"false\"}";
+            return "{\"valasz\":\"-1\"}";
         }
     }
 
